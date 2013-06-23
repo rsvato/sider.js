@@ -1,0 +1,122 @@
+<html>
+	<head>
+		<title>Test</title>
+		<link rel="stylesheet" type="text/css" href="menu.css"/>
+		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+		<script src="jquery-slider.js"></script>
+		<script src="underscore-1.4.4-min.js"></script>
+		<script>
+		_.templateSettings = {
+			interpolate : /\{\{(.+?)\}\}/g
+		};
+		
+		$(function(){
+				listener = function(event, selector, cleanup) {
+					event.preventDefault();
+					var selected = $(event.target).parents('li');
+					var appId = $(selected).attr('data-app-id');
+					if (cleanup !== undefined) {
+						cleanup();
+					}
+					var container = $(selector);
+					$(selector + ":visible").slideToggle();
+					container.children().remove();
+					var list = $('<ul/>');
+					for (var i = 0; i < 10; i++) {
+						var newId = 1 + (i + 1) * appId;
+						var html = _.template($('#simpleTemplate').text(), {
+							app : {
+								id: newId,
+								title: 'App (' + newId + ', top #' + appId + ')',
+								icon: "webpage.png"
+							}
+						});
+						list.append(html);
+					}
+					container.append(list);
+					var slider = $(list).slider();
+					container.append(slider);
+					container.slideToggle();
+				}
+				
+				$('.top .drop').on('click', function(evt){
+					listener(evt, '.details', function(){
+						$('.subdetails:visible').slideToggle();
+						$('.subdetails').children().remove();
+					});
+				})
+				
+				$('.details').on('click', '.drop', function(evt){
+					listener(evt, '.subdetails');
+				})
+				
+			});
+		</script>
+    <head>
+	<body>
+		<div class="menu top">
+			<ul>
+				<li class="submenu" data-app-id="100">
+					<a href="#" class="drop"><div class="app">
+						<div class="app-img">
+							<img src="webpage.png">
+						</div>
+						<p class="caption">Apps (100)</p>
+					</div></a>
+				</li>
+				<li class="submenu" data-app-id="200">
+					<a href="#" class="drop"><div class="app">
+						<div class="app-img">
+							<img src="webpage.png">
+						</div>
+						<p class="caption">Pages (200)</p>
+					</div></a>
+				</li>
+				<li class="submenu">
+					<div class="app">
+						<div class="app-img">
+							<img src="webpage.png">
+						</div>
+						<p class="caption">Content</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="menu details">
+		</div>
+		<div class="menu subdetails">
+		</div>
+		Here other content goes.
+    </body>
+	<script type="template/html" id="simpleTemplate">
+	<li class="submenu" data-app-id="{{app.id}}">
+		<a href="#" class="drop"><div class="app">
+			<div class="app-img">
+				<img src="{{ app.icon }}">
+			</div>
+			<p class="caption">{{app.title}}</p>
+		</div></a>
+	</li>
+	</script>
+	<script type="template/html" id="itemTemplate">
+	    <li id="app_{{ app.id }}" data-app-id="{{app.id}}">
+			<div class="app">
+	        <div class="appIconMenu" style="display: none;"></div>
+	        <div class="appIconDiv">
+	            <img class="appIcon" style="width: 160px; height: 160px;" src="{{ app.icon }}" />
+	            <img class="appSelector" style="display: none;"
+	                 src="images/stub_22w.png" />
+	        </div>
+	        <table class="appDescriptionTable">
+	            <tbody>
+	            <tr>
+	                <td align="center"><span class="appTitleSpan"> <strong
+	                        id="appTitle_{{app.id}}">{{app.title}}</strong>
+						</span></td>
+	            </tr>
+	            </tbody>
+	        </table>
+	        <div style="clear: both;"></div></div>
+	    </li>
+	</script>
+</html>
