@@ -27,19 +27,8 @@
 		$scrollable.append($content);
 		var animating = false;
 		
-		
-		var leftVisible = function(element) {
-			var pos = element.position();
-			return pos.left > element.width();
-		};
-		
 		var visibleCond = function(elem, f) {
 			return f(elem);
-		};
-		
-		var rightVisible = function(element) {
-			var pos = element.position();
-			return pos.left > 0;
 		};
 		
 		var checkScrollVisibility = function() {
