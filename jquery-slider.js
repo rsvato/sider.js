@@ -5,16 +5,17 @@
 			sliderClass: 'slider',
 			wrapperClass: 's-content-wrapper',
 			scrollableClass: 'scrollable',
-			rows: 1
+			rows: 1,
+			element: 'div'
 		}, sliderSettings || {});
 		
 		var firstElement = function() {
-			var result = $content.children().first();
+			var result = $content.find(settings.element).first();
 			return result;
 		};
 		
 		var lastElement = function() {
-			var result = $content.children().last();
+			var result = $content.find(settings.element).last();
 			return result;
 		};
 		
