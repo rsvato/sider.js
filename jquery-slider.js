@@ -5,7 +5,7 @@
 			sliderClass: 'slider',
 			wrapperClass: 's-content-wrapper',
 			scrollableClass: 'scrollable',
-			columns: 1
+			rows: 1
 		}, sliderSettings || {});
 		
 		var firstElement = function() {
@@ -35,18 +35,17 @@
 			var total = (elementWidth + addition) * $content.children().length;
 			var dimensions = {width: total, height: height, itemWidth: elementWidth + addition};
 			if (total > $(window).width()) {
-				console.log('Contained is too wide');
-				total = Math.floor(total / settings.columns);
+				total = Math.floor(total / settings.rows);
 				dimensions.width = total;
-				dimensions.height = height * settings.columns;
+				dimensions.height = height * settings.rows;
 			} 
 			return dimensions;
 		}
 		
 		var $content = $(this);
 		var dimensions = widthAndHeight();
-		console.log(dimensions);
 		$content.css('width', dimensions.width);
+		$content.css('margin', '0 0');
 		var $slider = $('<div class="slider"/>');
 		var $wrapper = $('<div class="s-content-wrapper"/>');
 		var $scrollable = $('<div class="scrollable"/>');
@@ -59,7 +58,12 @@
 		};
 		
 		var checkScrollVisibility = function() {
-			var left = visibleCond(lastElement(), function(e) {
+			var rightmost = settings.rows == 1 ? lastElement() : function(list) {
+				index = Math.ceil(list.length / settings.rows);
+				console.log('Middle index: ' + index);
+				return list[index - 1];
+			}($content.children());
+			var left = visibleCond($(rightmost), function(e) {
 				var lft = e.offset().left;
 				if (lft === 0 && $content.children().length > 0) {
 					lft = dimensions.width;
@@ -87,7 +91,8 @@
 				var target = $(evt.target);
 				var direction = target.attr('rel');
 				animating = true;
-				$content.animate({marginLeft: sign + '=184'}, 1000, function(){
+				offset = dimensions.itemWidth;
+				$content.animate({marginLeft: sign + '=' + offset}, 1000, function(){
 					var visibility = checkScrollVisibility();
 					$slider.find('.scroll-left').toggle(showOrHide = visibility.left);
 					$slider.find('.scroll-right').toggle(showOrHide = visibility.right);

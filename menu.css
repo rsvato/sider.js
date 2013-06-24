@@ -39,6 +39,7 @@ div > ul > li > a:link, .top > ul > li > a:visited {
 
 .s-content-wrapper, .scroll-left, .scroll-right {
 	display: block;
+	text-align: center;
 }
 
 .scroll-left, .scroll-right {
@@ -48,6 +49,14 @@ div > ul > li > a:link, .top > ul > li > a:visited {
 	width: 40px !important;
 	position: absolute;
 	top: 0;
+}
+
+.scroll-left {
+	background: white url('images/arrow.png') fixed center no-repeat;
+}
+
+.scroll-left span, .scroll-right span {
+	display: none;
 }
 
 div.submenu {

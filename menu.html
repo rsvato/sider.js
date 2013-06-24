@@ -10,8 +10,8 @@
 			interpolate : /\{\{(.+?)\}\}/g
 		};
 		
-		var itemCount = 15;
-		var columns = 2;
+		var itemCount = 33;
+		var rows = 1;
 		
 		$(function(){
 				listener = function(event, selector, cleanup) {
@@ -24,9 +24,9 @@
 					var container = $(selector);
 					$(selector + ":visible").slideToggle();
 					container.children().remove();
-					var list = $('<div style="padding:50px"/>');
+					var list = $('<div style="padding:50px;text-align: center"/>');
 					for (var i = 0; i < itemCount; i++) {
-						var newId = 1 + (i + 1) * appId;
+						var newId = i + 1;
 						var html = _.template($('#simpleTemplate').text(), {
 							app : {
 								id: newId,
@@ -37,19 +37,21 @@
 						list.append(html);
 					}
 					container.append(list);
-					var slider = $(list).slider({columns: columns});
+					var slider = $(list).slider({rows: rows});
 					container.append(slider);
 					container.slideToggle();
 				}
 				
 				$('.top .drop').on('click', function(evt){
+					evt.preventDefault();
 					listener(evt, '.details', function(){
-						$('.subdetails:visible').slideToggle();
+						//$('.subdetails:visible').slideToggle();
 						$('.subdetails').children().remove();
 					});
 				})
 				
 				$('.details').on('click', '.drop', function(evt){
+					evt.preventDefault();
 					listener(evt, '.subdetails');
 				})
 				
