@@ -5,6 +5,7 @@
 			sliderClass: 'slider',
 			wrapperClass: 's-content-wrapper',
 			scrollableClass: 'scrollable',
+			columns: 1
 		}, sliderSettings || {});
 		
 		var firstElement = function() {
@@ -17,9 +18,35 @@
 			return result;
 		};
 		
+		var widthAndHeight = function(container) {
+			var first = firstElement();
+			var height = $content.outerHeight();
+			var elementWidth = first.outerWidth(true);
+			var elementHeight = first.outerHeight(true);
+			if (height <= elementHeight) {
+				height += elementHeight;
+			}
+			var hasGaps = 'inline-block' === firstElement().css('display');
+			var addition = 0;
+			var fontSize = parseInt(firstElement().css('font-size'));
+			if (hasGaps && fontSize) {
+				addition = fontSize;
+			}
+			var total = (elementWidth + addition) * $content.children().length;
+			var dimensions = {width: total, height: height, itemWidth: elementWidth + addition};
+			if (total > $(window).width()) {
+				console.log('Contained is too wide');
+				total = Math.floor(total / settings.columns);
+				dimensions.width = total;
+				dimensions.height = height * settings.columns;
+			} 
+			return dimensions;
+		}
+		
 		var $content = $(this);
-		var itemWeight = firstElement().outerWidth() * $content.children().length;
-		$content.css('width', itemWeight);
+		var dimensions = widthAndHeight();
+		console.log(dimensions);
+		$content.css('width', dimensions.width);
 		var $slider = $('<div class="slider"/>');
 		var $wrapper = $('<div class="s-content-wrapper"/>');
 		var $scrollable = $('<div class="scrollable"/>');
@@ -35,7 +62,7 @@
 			var left = visibleCond(lastElement(), function(e) {
 				var lft = e.offset().left;
 				if (lft === 0 && $content.children().length > 0) {
-					lft = itemWeight;
+					lft = dimensions.width;
 				}
 				var rightEdge = $(window).width() - (lft + e.outerWidth());
 				return rightEdge > 0;
@@ -53,7 +80,7 @@
 				symbol = '<'
 			}
 			var link = $('<div rel="' + direction + '" class="scroll-' + direction + '"><span>' + symbol + '</span></div>');
-			
+			link.css('height', dimensions.height);
 			link.on('mouseenter', function(evt){
 				evt.preventDefault();
 				var content = $(target).children().first();

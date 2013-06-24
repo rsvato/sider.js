@@ -10,10 +10,13 @@
 			interpolate : /\{\{(.+?)\}\}/g
 		};
 		
+		var itemCount = 15;
+		var columns = 2;
+		
 		$(function(){
 				listener = function(event, selector, cleanup) {
 					event.preventDefault();
-					var selected = $(event.target).parents('li');
+					var selected = $(event.target).parents('[data-app-id]');
 					var appId = $(selected).attr('data-app-id');
 					if (cleanup !== undefined) {
 						cleanup();
@@ -21,8 +24,8 @@
 					var container = $(selector);
 					$(selector + ":visible").slideToggle();
 					container.children().remove();
-					var list = $('<ul/>');
-					for (var i = 0; i < 10; i++) {
+					var list = $('<div style="padding:50px"/>');
+					for (var i = 0; i < itemCount; i++) {
 						var newId = 1 + (i + 1) * appId;
 						var html = _.template($('#simpleTemplate').text(), {
 							app : {
@@ -34,7 +37,7 @@
 						list.append(html);
 					}
 					container.append(list);
-					var slider = $(list).slider();
+					var slider = $(list).slider({columns: columns});
 					container.append(slider);
 					container.slideToggle();
 				}
@@ -89,21 +92,21 @@
 		Here other content goes.
     </body>
 	<script type="template/html" id="simpleTemplate">
-	<li class="submenu" data-app-id="{{app.id}}">
+	<div class="submenu" data-app-id="{{app.id}}">
 		<a href="#" class="drop"><div class="app">
 			<div class="app-img">
-				<img src="{{ app.icon }}">
+				<img src="{{ app.icon }}" style="width: 144px; height: 144px;">
 			</div>
 			<p class="caption">{{app.title}}</p>
 		</div></a>
-	</li>
+	</div>
 	</script>
 	<script type="template/html" id="itemTemplate">
 	    <li id="app_{{ app.id }}" data-app-id="{{app.id}}">
 			<div class="app">
 	        <div class="appIconMenu" style="display: none;"></div>
 	        <div class="appIconDiv">
-	            <img class="appIcon" style="width: 160px; height: 160px;" src="{{ app.icon }}" />
+	            <img class="appIcon" style="width: 144px; height: 144px;" src="{{ app.icon }}" />
 	            <img class="appSelector" style="display: none;"
 	                 src="images/stub_22w.png" />
 	        </div>

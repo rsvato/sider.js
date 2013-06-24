@@ -42,13 +42,17 @@ div > ul > li > a:link, .top > ul > li > a:visited {
 }
 
 .scroll-left, .scroll-right {
-	height: 220px;
 	background-color: white;
 	z-index: 99;
 	opacity: 0.5;
 	width: 40px !important;
 	position: absolute;
 	top: 0;
+}
+
+div.submenu {
+	display: inline-block;
+	padding: 5px;
 }
 
 .scroll-right {
