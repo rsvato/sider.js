@@ -24,7 +24,7 @@
 					var container = $(selector);
 					$(selector + ":visible").slideToggle();
 					container.children().remove();
-					var list = $('<div style="padding:50px;text-align: center"/>');
+					var list = $('<div/>');
 					for (var i = 0; i < itemCount; i++) {
 						var newId = i + 1;
 						var html = _.template($('#simpleTemplate').text(), {

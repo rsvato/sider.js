@@ -26,6 +26,7 @@
 			if (height <= elementHeight) {
 				height += elementHeight;
 			}
+			var height = elementHeight * settings.rows;
 			var hasGaps = 'inline-block' === firstElement().css('display');
 			var addition = 0;
 			var fontSize = parseInt(firstElement().css('font-size'));
@@ -37,8 +38,9 @@
 			if (total > $(window).width()) {
 				total = Math.floor(total / settings.rows);
 				dimensions.width = total;
-				dimensions.height = height * settings.rows;
-			} 
+				//dimensions.height = height * settings.rows;
+			}
+			console.log(dimensions); 
 			return dimensions;
 		}
 		
@@ -83,7 +85,7 @@
 				sign = '-';
 				symbol = '<'
 			}
-			var link = $('<div rel="' + direction + '" class="scroll-' + direction + '"><span>' + symbol + '</span></div>');
+			var link = $('<div rel="' + direction + '" class="scroll-' + direction + '"/>');
 			link.css('height', dimensions.height);
 			link.on('mouseenter', function(evt){
 				evt.preventDefault();
@@ -111,7 +113,7 @@
 			});
 			
 			if (direction === 'right') {
-				link.css('left', ($(window).width() - 50) + "px")
+				link.css('left', ($(window).width() - 70) + "px")
 			}
 			return link;
 		}

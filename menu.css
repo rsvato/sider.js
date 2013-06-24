@@ -39,24 +39,30 @@ div > ul > li > a:link, .top > ul > li > a:visited {
 
 .s-content-wrapper, .scroll-left, .scroll-right {
 	display: block;
-	text-align: center;
 }
 
 .scroll-left, .scroll-right {
-	background-color: white;
 	z-index: 99;
-	opacity: 0.5;
-	width: 40px !important;
+	opacity: 0.4;
+	width: 60px !important;
 	position: absolute;
 	top: 0;
+	border: white solid 2px;
+}
+
+
+.scroll-left:hover, .scroll-right:hover {
+	opacity: 0.6;
 }
 
 .scroll-left {
-	background: white url('images/arrow.png') fixed center no-repeat;
+	background: rgb(200,200,200) url('images/left.png') center center no-repeat;
+	border-left: none;
 }
 
-.scroll-left span, .scroll-right span {
-	display: none;
+.scroll-right {
+	background: rgb(200,200,200) url('images/right.png') center center no-repeat;
+	border-right: none;
 }
 
 div.submenu {
