@@ -9,28 +9,27 @@
 			element: 'div'
 		}, sliderSettings || {});
 		
-		var firstElement = function() {
-			var result = $content.find(settings.element).first();
+		var firstElement = function(elem) {
+			var examine = elem || $content;
+			var result = examine.find(settings.element).first();
 			return result;
 		};
 		
-		var lastElement = function() {
-			var result = $content.find(settings.element).last();
+		var lastElement = function(elem) {
+			var examine = elem || $content;
+			var result = examine.find(settings.element).last();
 			return result;
 		};
 		
 		var widthAndHeight = function(container) {
-			var first = firstElement();
-			var height = $content.outerHeight();
+			var first = firstElement(container);
 			var elementWidth = first.outerWidth(true);
 			var elementHeight = first.outerHeight(true);
-			if (height <= elementHeight) {
-				height += elementHeight;
-			}
+			var height = $content.outerHeight();
 			var height = elementHeight * settings.rows;
-			var hasGaps = 'inline-block' === firstElement().css('display');
+			var hasGaps = 'inline-block' === first.css('display');
 			var addition = 0;
-			var fontSize = parseInt(firstElement().css('font-size'));
+			var fontSize = parseInt(first.css('font-size'));
 			if (hasGaps && fontSize) {
 				addition = fontSize;
 			}
@@ -39,14 +38,23 @@
 			if (total > $(window).width()) {
 				total = Math.floor(total / settings.rows);
 				dimensions.width = total;
-				//dimensions.height = height * settings.rows;
 			}
-			console.log(dimensions); 
 			return dimensions;
 		}
 		
 		var $content = $(this);
-		var dimensions = widthAndHeight();
+		var restore = false;
+		var elem = $content;
+		var restore = false;
+		if ($content.is(":hidden")) {
+			elem = $content.clone().attr('style', 'position: absolute !important; top: -1000 !important;').attr('id', 'slider_fix_clone');
+			elem.css('display', 'block');
+			elem.prependTo('body');
+		}
+		var dimensions = widthAndHeight(elem);
+		if (restore) {
+			$('#slider_fix_clone').remove();
+		}
 		$content.css('width', dimensions.width);
 		$content.css('margin', '0 0');
 		var $slider = $('<div class="slider"/>');
@@ -63,7 +71,6 @@
 		var checkScrollVisibility = function() {
 			var rightmost = settings.rows == 1 ? lastElement() : function(list) {
 				index = Math.ceil(list.length / settings.rows);
-				console.log('Middle index: ' + index);
 				return list[index - 1];
 			}($content.children());
 			var left = visibleCond($(rightmost), function(e) {
