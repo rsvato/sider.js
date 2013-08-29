@@ -3,6 +3,7 @@
 		<title>Test</title>
 		<link rel="stylesheet" type="text/css" href="menu.css"/>
 		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		<script src="jquery-slider.js"></script>
 		<script src="underscore-1.4.4-min.js"></script>
 		<script>
@@ -11,7 +12,7 @@
 		};
 		
 		var itemCount = 33;
-		var rows = 1;
+		var rows = 3;
 		
 		$(function(){
 				listener = function(event, selector, cleanup) {
@@ -25,6 +26,10 @@
 					$(selector + ":visible").slideToggle();
 					container.children().remove();
 					var list = $('<div/>');
+					var $wrapper = $('<div class="menuwrapper"/>');
+					var $mods = $('<div class="mods"/>')
+					$wrapper.append($mods);
+					list.append($wrapper) 
 					for (var i = 0; i < itemCount; i++) {
 						var newId = i + 1;
 						var html = _.template($('#simpleTemplate').text(), {
@@ -34,9 +39,9 @@
 								icon: "webpage.png"
 							}
 						});
-						list.append(html);
+						$mods.append(html);
 					}
-					var slider = $(list).slider({rows: rows});
+					var slider = $wrapper.slider({rows: rows, wrapToWindow: false});
 					container.append(slider);
 					container.slideToggle();
 				}
